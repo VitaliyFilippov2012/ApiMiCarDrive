@@ -52,7 +52,7 @@ namespace Business.AutoMapper
 
                 CreateMap<Event, CarEvent>();
 
-                CreateMap<CarEvent, Refill>()
+                CreateMap<CarEvent, Shared.Models.Refill>()
                     .IncludeBase<CarEvent, Event>();
 
                 CreateMap<CarEvent, EventService>()
