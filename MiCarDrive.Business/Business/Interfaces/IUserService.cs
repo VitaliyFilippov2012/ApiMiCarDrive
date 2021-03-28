@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DBContext.Models;
+using Business.Filters;
+using Shared.Models;
 
 namespace Business.Interfaces
 {
     public interface IUsersService
     {
-        Task<List<User>> GetAllUsersAsync();
+        Task<IEnumerable<UserInfo>> GetUsersAsync(UserFilter userFilter);
 
-        Task<User> GetUserByIdAsync(Guid idUser);
+        Task<Guid> CreateNewUserAsync(UserInfo user);
 
-        Task<Guid> CreateNewUserAsync(User user);
+        Task<Guid> GetUserIdByLoginAsync(string email);
 
-        Task<Guid> GetUserByLoginAsync(string email);
-
-        Task<bool> UpdateUserAsync(User user);
+        Task<bool> UpdateUserAsync(UserInfo user);
     }
 }

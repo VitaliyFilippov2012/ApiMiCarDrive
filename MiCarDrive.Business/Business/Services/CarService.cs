@@ -70,7 +70,7 @@ namespace Business.Services
         {
             if (string.IsNullOrWhiteSpace(email))
                 return false;
-            var userId = await _userService.GetUserByLoginAsync(email);
+            var userId = await _userService.GetUserIdByLoginAsync(email);
             if (userId == Guid.Empty)
                 return false;
             var json = carId + userId.ToString();

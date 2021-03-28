@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.AutoMapper;
+using Business.Filters;
+using Business.Heplers;
 using Business.Interfaces;
 using DBContext.Context;
-using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models;
+using Car = DBContext.Models.Car;
 
 namespace Business.Services
 {
@@ -15,14 +19,9 @@ namespace Business.Services
         {
         }
 
-        public Task<List<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserInfo>> GetUsersAsync(UserFilter userFilter)
         {
-            return Context.Users.ToListAsync();
-        }
-
-        public Task<User> GetUserByIdAsync(Guid idUser)
-        {
-            return Context.Users.Where(x => x.UserId == idUser).FirstOrDefaultAsync();
+            return (await Context.Users.Where(userFilter).ToListAsync()).ToDtoList();
         }
 
         public async Task<IEnumerable<Car>> GetUserCarsByUserIdAsync(Guid idUser)
@@ -30,26 +29,26 @@ namespace Business.Services
             return await Context.UsersCars.Where(x => x.UserId == idUser).Select(x => x.Car).ToListAsync();
         }
 
-        public async Task<Guid> CreateNewUserAsync(User user)
+        public async Task<Guid> CreateNewUserAsync(UserInfo user)
         {
             if (user.UserId == Guid.Empty)
                 user.UserId = Guid.NewGuid();
-            await Context.Users.AddAsync(user);
+            await Context.Users.AddAsync(user.ToEntity());
             return user.UserId;
         }
 
-        public Task<Guid> GetUserByLoginAsync(string email)
+        public Task<Guid> GetUserIdByLoginAsync(string email)
         {
             return Context.Authentications.Where(x => x.Login == email).Select(x => x.UserId).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> UpdateUserAsync(User user)
+        public async Task<bool> UpdateUserAsync(UserInfo user)
         {
             using (var transaction = Context.Database.BeginTransaction())
             {
                 try
                 {
-                    Context.Users.Update(user);
+                    Context.Users.Update(user.ToEntity());
                     await Context.SaveChangesAsync();
                     transaction.Commit();
                     return true;

@@ -50,6 +50,11 @@ namespace Business.AutoMapper
             return ToDto<User, UserInfo>(user);
         }
 
+        public static IEnumerable<UserInfo> ToDtoList(this IEnumerable<User> users)
+        {
+            return users.Select(x => x.ToDto());
+        }
+
         public static User ToEntity(this UserInfo userInfo)
         {
             return ToDto<UserInfo, User>(userInfo);

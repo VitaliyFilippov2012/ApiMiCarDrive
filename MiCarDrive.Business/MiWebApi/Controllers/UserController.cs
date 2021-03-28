@@ -1,87 +1,61 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Filters;
+using Business.Interfaces;
+using MiWebApi.Aspects;
+using MiWebApi.Helpers;
+using Shared.Models;
 
 namespace MiWebApi.Controllers
 {
+    [ApiController]
     public class UserController : Controller
     {
-        // GET: UserController
-        public ActionResult Index()
+        private readonly IUsersService _userService;
+
+        public UserController(IUsersService userService)
         {
-            return View();
+            _userService = userService;
         }
 
-        // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("user/name/{name}")]
+        public async Task<UserInfo> GetUserByNameAsync(string name)
         {
-            return View();
+            var filter = new UserFilter { UserName = name };
+            return (await _userService.GetUsersAsync(filter)).FirstOrDefault();
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("user/id")]
+        public async Task<UserInfo> GetUserById()
         {
-            return View();
+            var headers = HttpContext.Request.Headers;
+            if (!headers.TryGetValue("Token", out var token))
+                return null;
+            var userId = TokenServiceHelper.GetUserId(token);
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+            var filter = new UserFilter { UserId = new Guid(userId) };
+            return (await _userService.GetUsersAsync(filter)).FirstOrDefault();
         }
 
-        // POST: UserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPut]
+        [AuthenticationFilter]
+        [Route("user")]
+        public async Task<bool> UpdateUser([FromBody] UserInfo user)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UserController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var headers = HttpContext.Request.Headers;
+            if (!headers.TryGetValue("Token", out var token))
+                return false;
+            var userId = TokenServiceHelper.GetUserId(token);
+            if (string.IsNullOrWhiteSpace(userId))
+                return false;
+            return await _userService.UpdateUserAsync(user);
         }
     }
 }

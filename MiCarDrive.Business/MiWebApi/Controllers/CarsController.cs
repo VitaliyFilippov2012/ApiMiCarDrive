@@ -9,6 +9,7 @@ using Shared.Models;
 
 namespace MiWebApi.Controllers
 {
+    [ApiController]
     public class CarsController : Controller
     {
         private readonly ICarsService _carsService;

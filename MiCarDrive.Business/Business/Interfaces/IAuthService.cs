@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DBContext.Models;
+using Shared.Models;
 
 namespace Business.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Business.Interfaces
     {
         Task<Guid> GetUserIdByPasswLoginAsync(string login, string password);
         Task<Authentication> GetUserByIdAsync(Guid id);
-        Task RegisterUserAsync(Authentication authentication);
-        Task<bool> UpdateUserCredentialsAsync(Authentication authentication);
+        Task<bool> RegisterUserAsync(UserCredentials credentials);
+        Task<bool> UpdateUserCredentialsAsync(UserCredentials credentials);
     }
 }

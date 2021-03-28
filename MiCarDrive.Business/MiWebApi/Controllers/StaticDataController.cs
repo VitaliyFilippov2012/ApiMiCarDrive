@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Filters;
 using Business.Interfaces;
 using MiWebApi.Aspects;
 using MiWebApi.Helpers;
@@ -9,6 +10,7 @@ using Shared.Models;
 
 namespace MiWebApi.Controllers
 {
+    [ApiController]
     public class StaticDataController : Controller
     {
         private readonly IUsersService _userService;
@@ -30,7 +32,11 @@ namespace MiWebApi.Controllers
             var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return null;
-            var user = await _userService.GetUserByIdAsync(Guid.Parse(userId));
+            var filter = new UserFilter()
+            {
+                UserId = new Guid(userId)
+            };
+            var user = (await _userService.GetUsersAsync(filter)).FirstOrDefault();
             var typeServices = await _serviceService.GetServiceTypes();
             var typeEvents = await _eventsService.GetTypeEventsAsync();
             var result = new StaticDataWrapper()
