@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Business.Interfaces;
+using Business.Services;
+using DBContext.Context;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Botstraper
 {
@@ -6,15 +9,15 @@ namespace Botstraper
     {
         public static void ConfigureIoC(IServiceCollection services)
         {
-            //services.AddScoped<DBContext.Context.DBContext, DBContext.Context.DBContext>();
-            //services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<DatabaseContext, DatabaseContext>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IEmailService, EmailService>();
             //services.AddScoped<ICarsService, CarsService>();
             //services.AddScoped<IServicesService, ServicesService>();
             //services.AddScoped<IDetailsService, DetailsService>();
             //services.AddScoped<IEventsService, EventsService>();
-            //services.AddScoped<IAuthService, AuthService>();
             //services.AddScoped<IAuditService, AuditService>();
-            //services.AddScoped<IEmailService, EmailService>();
             //services.AddScoped<ISoapService, SoapService>();
             //services.AddScoped<ICryptographyService, CryptographyService>();
         }
