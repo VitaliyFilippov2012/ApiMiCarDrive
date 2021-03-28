@@ -70,7 +70,6 @@ namespace MiWebApi.Controllers
             {
                 await _emailService.SendEmailMessageAsync(message, userCredentials.Login);
             }
-
             return true;
         }
     }

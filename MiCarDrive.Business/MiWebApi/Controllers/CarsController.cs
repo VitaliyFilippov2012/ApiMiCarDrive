@@ -1,87 +1,99 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Business.Interfaces;
+using MiWebApi.Aspects;
+using MiWebApi.Helpers;
+using Shared.Models;
 
 namespace MiWebApi.Controllers
 {
     public class CarsController : Controller
     {
-        // GET: CarsController
-        public ActionResult Index()
+        private readonly ICarsService _carsService;
+
+        public CarsController(ICarsService carsService)
         {
-            return View();
+            _carsService = carsService;
         }
 
-        // GET: CarsController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("cars/userId")]
+        public async Task<IEnumerable<Car>> GetCarsAsync()
         {
-            return View();
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+            return await _carsService.GetAllUserCarsAsync(Guid.Parse(userId));
         }
 
-        // GET: CarsController/Create
-        public ActionResult Create()
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("car/{carId}")]
+        public Task<Car> GetCarByIdName(Guid carId)
         {
-            return View();
+            if (!Validate()) return null;
+            return _carsService.GetCarByIdAsync(carId);
         }
 
-        // POST: CarsController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [AuthenticationFilter]
+        [Route("car")]
+        public async Task<Guid?> CreateCar([FromBody] Car car)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+            return await _carsService.CreateCarAsync(car, Guid.Parse(userId));
         }
 
-        // GET: CarsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: CarsController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [AuthenticationFilter]
+        [Route("car/shareCar/{carId}&{email}")]
+        public async Task<bool> ShareCar(Guid carId, string email)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!Validate()) return false;
+            var uri = Constants.URI_SERVER + "/fcm/addShareCar/";
+            return await _carsService.ShareCarWithOtherUserAsync(carId, email, uri);
         }
 
-        // GET: CarsController/Delete/5
-        public ActionResult Delete(int id)
+        private bool Validate()
         {
-            return View();
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
+            if (string.IsNullOrWhiteSpace(userId))
+                return false;
+            return true;
         }
 
-        // POST: CarsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpGet]
+        [Route("fcm/addShareCar/{json}")]
+        public async Task<IActionResult> AddSharingCar(string json)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (await _carsService.AddShareCarAsync(json))
+                return View("CarAddedView");
+            return View("OopsView");
+        }
+
+        [HttpDelete]
+        [AuthenticationFilter]
+        [Route("fcm/deleteShareCar/{carId}")]
+        public async Task<bool> AddSharingCar(Guid carId)
+        {
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
+            if (string.IsNullOrWhiteSpace(userId))
+                return false;
+            return await _carsService.DeleteShareCarAsync(carId, Guid.Parse(userId));
+        }
+
+        [HttpPut]
+        [AuthenticationFilter]
+        [Route("car")]
+        public async Task<bool> UpdateCar([FromBody] Car car)
+        {
+            if (!Validate()) return false;
+            return await _carsService.UpdateCarAsync(car);
         }
     }
 }

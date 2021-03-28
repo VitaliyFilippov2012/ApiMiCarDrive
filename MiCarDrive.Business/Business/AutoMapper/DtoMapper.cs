@@ -2,6 +2,7 @@
 using System.Linq;
 using DBContext.Models;
 using Shared.Models;
+using Car = DBContext.Models.Car;
 using Detail = Shared.Models.Detail;
 using Refill = Shared.Models.Refill;
 
@@ -17,6 +18,31 @@ namespace Business.AutoMapper
         private static T ToDto<TE, T>(this TE item)
         {
             return AutoMapperConfig.Mapper.Map<TE, T>(item);
+        }
+
+        private static T ToDto<TE, T>(this TE item, T destination)
+        {
+            return AutoMapperConfig.Mapper.Map(item, destination);
+        }
+
+        public static Shared.Models.Car ToDto(this Car car)
+        {
+            return ToDto<Car, Shared.Models.Car>(car);
+        }
+
+        public static IEnumerable<Shared.Models.Car> ToDtoList(this IEnumerable<Car> cars)
+        {
+            return cars.Select(x=>x.ToDto());
+        }
+
+        public static Car ToEntity(this Shared.Models.Car car)
+        {
+            return ToDto<Shared.Models.Car, Car>(car);
+        }
+
+        public static Car ToEntity(this Shared.Models.Car car, Car entity)
+        {
+            return ToDto(car, entity);
         }
 
         public static UserInfo ToDto(this User user)

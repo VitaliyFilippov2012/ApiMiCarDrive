@@ -15,13 +15,13 @@ namespace Botstraper
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IEmailService, EmailService>();
-            //services.AddScoped<ICarsService, CarsService>();
+            services.AddScoped<ICarsService, CarService>();
             services.AddScoped<IServicesService, ServicesService>();
             services.AddScoped<IDetailsService, DetailsService>();
             services.AddScoped<IEventsService, EventsService>();
             //services.AddScoped<IAuditService, AuditService>();
             //services.AddScoped<ISoapService, SoapService>();
-            //services.AddScoped<ICryptographyService, CryptographyService>();
+            services.AddScoped<ICryptographyService, CryptographyService>();
         }
     }
 }

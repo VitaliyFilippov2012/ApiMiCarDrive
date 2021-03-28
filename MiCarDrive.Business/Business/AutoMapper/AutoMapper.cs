@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DBContext.Models;
 using Shared.Models;
+using Car = Shared.Models.Car;
 using Detail = DBContext.Models.Detail;
 using Refill = DBContext.Models.Refill;
 
@@ -30,12 +31,19 @@ namespace Business.AutoMapper
             {
                 UserMapping();
                 EventMapping();
+                CarMapping();
             }
 
             private void UserMapping()
             {
                 CreateMap<User, UserInfo>();
                 CreateMap<UserInfo, User>();
+            }
+
+            private void CarMapping()
+            {
+                CreateMap<DBContext.Models.Car, Car>();
+                CreateMap<Car, DBContext.Models.Car>();
             }
 
             private void DetailMapping()

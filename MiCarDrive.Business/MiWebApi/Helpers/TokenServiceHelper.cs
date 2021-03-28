@@ -40,9 +40,11 @@ namespace MiWebApi.Helpers
 
         public static string GetUserId(string token)
         {
+            if (string.IsNullOrEmpty(token))
+                return string.Empty;
             var identity = GetTokenIdentity(token);
             if (identity == null || !identity.IsAuthenticated)
-                return "";
+                return string.Empty;
 
             var userIdClaim = identity.FindFirst(ClaimTypes.Name);
             var userId = userIdClaim?.Value;

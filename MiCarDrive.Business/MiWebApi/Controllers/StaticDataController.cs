@@ -27,10 +27,7 @@ namespace MiWebApi.Controllers
         [Route("data/getStaticInfo")]
         public async Task<StaticDataWrapper> GetStaticData()
         {
-            var headers = HttpContext.Request.Headers;
-            if (!headers.TryGetValue("Token", out var token))
-                return null;
-            var userId = TokenServiceHelper.GetUserId(token);
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return null;
             var user = await _userService.GetUserByIdAsync(Guid.Parse(userId));
