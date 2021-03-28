@@ -15,7 +15,7 @@ namespace Shared.Models
         public bool Active { get; set; }
         public string Vin { get; set; }
         public string Comment { get; set; }
-        public byte[] Photo { get; set; }
+        public Guid? PhotoArchiveId { get; set; }
         public int YearIssue { get; set; }
     }
 }

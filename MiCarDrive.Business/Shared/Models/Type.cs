@@ -5,8 +5,8 @@ namespace Shared.Models
     [Serializable]
     public class Type
     {
-        public Guid TypeId { get; set; }
+        public Guid Id { get; set; }
 
-        public string TypeName { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Shared.Models
     public class UserInfo
     {
         public Guid UserId { get; set; }
-        public string Sex { get; set; }
+        public string Gender { get; set; }
 
         [DateRange]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -16,9 +16,8 @@ namespace Shared.Models
         public string Name { get; set; }
         public string Lastname { get; set; }
         public string Patronymic { get; set; }
-        public string Address { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
-        public byte[] Photo { get; set; }
+        public Guid? PhotoArchiveId { get; set; }
     }
 }
