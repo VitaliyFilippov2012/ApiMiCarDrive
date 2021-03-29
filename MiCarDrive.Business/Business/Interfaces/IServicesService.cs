@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DBContext.Models;
+using Shared.Models;
 
 namespace Business.Interfaces
 {
     public interface IServicesService
     {
-        Task<IEnumerable<ServiceType>> GetServiceTypes();
+        Task<IEnumerable<Type>> GetServiceTypes();
     }
 }

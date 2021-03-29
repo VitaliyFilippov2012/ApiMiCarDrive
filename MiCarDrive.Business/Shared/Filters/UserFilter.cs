@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Business.Filters
+namespace Shared.Filters
 {
     public class UserFilter
     {

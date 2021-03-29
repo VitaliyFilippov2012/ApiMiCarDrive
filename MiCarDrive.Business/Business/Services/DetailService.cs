@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.AutoMapper;
 using Business.Interfaces;
 using DBContext.Context;
-using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models;
 
 namespace Business.Services
 {
@@ -17,7 +18,7 @@ namespace Business.Services
 
         public async Task<IEnumerable<Detail>> GetDetailsByServiceId(Guid serviceId)
         {
-            return await Context.Details.Where(x => x.ServiceId == serviceId).ToListAsync();
+            return (await Context.Details.Where(x => x.ServiceId == serviceId).ToListAsync()).ToDtoList();
         }
     }
 }

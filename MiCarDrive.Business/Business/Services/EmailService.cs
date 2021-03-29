@@ -8,9 +8,11 @@ namespace Business.Services
 {
     public class EmailService : IEmailService
     {
-        public async Task SendEmailMessageAsync(string message, string emailTo, string emailFrom = "iDonateBelarus@yandex.ru")
+        private const string _emailFrom = "iDonateBelarus@yandex.ru";
+
+        public async Task SendEmailMessageAsync(string message, string emailTo)
         {
-            var from = new MailAddress(emailFrom, "Support FinanceCarManager");
+            var from = new MailAddress(_emailFrom, "Support FinanceCarManager");
             var to = new MailAddress(emailTo);
             var m = new MailMessage(from, to)
             {
@@ -19,7 +21,7 @@ namespace Business.Services
             };
             var smtp = new SmtpClient("smtp.yandex.ru", 587)
             {
-                Credentials = new NetworkCredential(emailFrom, "igiveapieceofheart"),
+                Credentials = new NetworkCredential(_emailFrom, "igiveapieceofheart"),
                 EnableSsl = true
             };
             var sending = true;

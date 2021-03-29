@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Business.AutoMapper;
 using Business.Interfaces;
 using DBContext.Context;
 using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models;
 
 namespace Business.Services
 {
@@ -13,9 +15,9 @@ namespace Business.Services
         {
         }
 
-        public async Task<IEnumerable<ServiceType>> GetServiceTypes()
+        public async Task<IEnumerable<Type>> GetServiceTypes()
         {
-            return await Context.ServiceTypes.ToListAsync();
+            return (await Context.ServiceTypes.ToListAsync()).ToDtoList<ServiceType, Type>();
         }
     }
 }

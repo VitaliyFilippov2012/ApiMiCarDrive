@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.AutoMapper;
-using Business.Filters;
 using Business.Heplers;
 using Business.Interfaces;
 using DBContext.Context;
 using Microsoft.EntityFrameworkCore;
+using Shared.Filters;
 using Shared.Models;
-using Car = DBContext.Models.Car;
 
 namespace Business.Services
 {
@@ -22,11 +21,6 @@ namespace Business.Services
         public async Task<IEnumerable<UserInfo>> GetUsersAsync(UserFilter userFilter)
         {
             return (await Context.Users.Where(userFilter).ToListAsync()).ToDtoList();
-        }
-
-        public async Task<IEnumerable<Car>> GetUserCarsByUserIdAsync(Guid idUser)
-        {
-            return await Context.UsersCars.Where(x => x.UserId == idUser).Select(x => x.Car).ToListAsync();
         }
 
         public async Task<Guid> CreateNewUserAsync(UserInfo user)

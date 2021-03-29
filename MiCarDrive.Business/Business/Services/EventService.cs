@@ -9,6 +9,7 @@ using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 using Refill = Shared.Models.Refill;
+using Type = Shared.Models.Type;
 
 namespace Business.Services
 {
@@ -38,7 +39,7 @@ namespace Business.Services
         {
             var events = (await Context.CarEvents.Include(x => x.UserCar).Include(x => x.CarServices).Where(x => x.UserCar.CarId == carId).ToListAsync()).ToServiceDtoList().ToList();
             foreach (var e in events)
-                e.Details = (await _detailsService.GetDetailsByServiceId(e.ServiceId)).ToDtoList();
+                e.Details = await _detailsService.GetDetailsByServiceId(e.ServiceId);
 
             return events;
         }
@@ -203,9 +204,9 @@ namespace Business.Services
             return (await Context.CarEvents.Include(x => x.CarServices).Include(nameof(DBContext.Models.Detail)).Where(x => x.EventId == idEvent).FirstOrDefaultAsync()).ToServiceDto();
         }
 
-        public async Task<IEnumerable<EventType>> GetTypeEventsAsync()
+        public async Task<IEnumerable<Type>> GetTypeEventsAsync()
         {
-            return await Context.EventTypes.ToListAsync();
+            return (await Context.EventTypes.ToListAsync()).ToDtoList<EventType, Type>();
         }
     }
 }

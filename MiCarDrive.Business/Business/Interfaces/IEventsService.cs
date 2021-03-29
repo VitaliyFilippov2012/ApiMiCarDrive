@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DBContext.Models;
 using Shared.Models;
+using Type = Shared.Models.Type;
 
 namespace Business.Interfaces
 {
@@ -16,7 +17,7 @@ namespace Business.Interfaces
 
         Task<Shared.Models.Refill> GetFuelEventByIdAsync(Guid idEvent);
 
-        Task<IEnumerable<EventType>> GetTypeEventsAsync();
+        Task<IEnumerable<Type>> GetTypeEventsAsync();
 
         Task<IEnumerable<Shared.Models.Refill>> GetCarFuelsEventsAsync(Guid carId);
 

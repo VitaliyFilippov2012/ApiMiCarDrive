@@ -58,6 +58,12 @@ namespace Business.AutoMapper
                     .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserCar.UserId))
                     .ForMember(dest => dest.CarId, opt => opt.MapFrom(src => src.UserCar.CarId));
 
+                CreateMap<ServiceType, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ServiceTypeId));
+
+                CreateMap<EventType, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.EventTypeId));
+
                 CreateMap<Event, CarEvent>();
 
                 CreateMap<CarEvent, Shared.Models.Refill>()

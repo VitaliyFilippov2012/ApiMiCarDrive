@@ -10,7 +10,7 @@ namespace Business.AutoMapper
 {
     public static class DtoMapper
     {
-        private static IEnumerable<T> ToDtoList<TE, T>(this IEnumerable<TE> source)
+        public static IEnumerable<T> ToDtoList<TE, T>(this IEnumerable<TE> source)
         {
             return source.Select(item => ToDto<TE, T>(item));
         }

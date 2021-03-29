@@ -8,8 +8,8 @@ namespace Shared.Models
     {
         public UserInfo UserInfo { get; set; }
 
-        public List<Type> TypeServices { get; set; }
+        public IEnumerable<Type> TypeServices { get; set; }
 
-        public List<Type> TypeEvents { get; set; }
+        public IEnumerable<Type> TypeEvents { get; set; }
     }
 }

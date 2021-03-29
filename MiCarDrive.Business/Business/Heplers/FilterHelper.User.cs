@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Business.Filters;
 using DBContext.Models;
 using LinqKit;
+using Shared.Filters;
 
 namespace Business.Heplers
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Business.Filters;
+using Shared.Filters;
 using Shared.Models;
 
 namespace Business.Interfaces

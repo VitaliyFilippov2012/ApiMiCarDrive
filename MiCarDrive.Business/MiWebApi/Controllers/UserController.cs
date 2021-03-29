@@ -2,10 +2,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Filters;
 using Business.Interfaces;
 using MiWebApi.Aspects;
 using MiWebApi.Helpers;
+using Shared.Filters;
 using Shared.Models;
 
 namespace MiWebApi.Controllers
@@ -34,10 +34,7 @@ namespace MiWebApi.Controllers
         [Route("user/id")]
         public async Task<UserInfo> GetUserById()
         {
-            var headers = HttpContext.Request.Headers;
-            if (!headers.TryGetValue("Token", out var token))
-                return null;
-            var userId = TokenServiceHelper.GetUserId(token);
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return null;
             var filter = new UserFilter { UserId = new Guid(userId) };
@@ -49,10 +46,7 @@ namespace MiWebApi.Controllers
         [Route("user")]
         public async Task<bool> UpdateUser([FromBody] UserInfo user)
         {
-            var headers = HttpContext.Request.Headers;
-            if (!headers.TryGetValue("Token", out var token))
-                return false;
-            var userId = TokenServiceHelper.GetUserId(token);
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return false;
             return await _userService.UpdateUserAsync(user);

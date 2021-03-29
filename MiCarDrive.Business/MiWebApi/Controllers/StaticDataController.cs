@@ -2,10 +2,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Filters;
 using Business.Interfaces;
 using MiWebApi.Aspects;
 using MiWebApi.Helpers;
+using Shared.Filters;
 using Shared.Models;
 
 namespace MiWebApi.Controllers
@@ -37,8 +37,6 @@ namespace MiWebApi.Controllers
                 UserId = new Guid(userId)
             };
             var user = (await _userService.GetUsersAsync(filter)).FirstOrDefault();
-            var typeServices = await _serviceService.GetServiceTypes();
-            var typeEvents = await _eventsService.GetTypeEventsAsync();
             var result = new StaticDataWrapper()
             {
                 UserInfo = new UserInfo()
@@ -53,10 +51,8 @@ namespace MiWebApi.Controllers
                     Gender = user.Gender,
                     PhotoArchiveId = user.PhotoArchiveId
                 },
-                TypeServices = typeServices.Select(x => new Shared.Models.Type() { Id = x.ServiceTypeId, Name = x.Name })
-                    .ToList(),
-                TypeEvents = typeEvents.Select(x => new Shared.Models.Type() { Id = x.EventTypeId, Name = x.Name })
-                    .ToList(),
+                TypeServices = await _serviceService.GetServiceTypes(),
+                TypeEvents = await _eventsService.GetTypeEventsAsync()
             };
 
             return result;

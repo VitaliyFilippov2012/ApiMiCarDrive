@@ -20,19 +20,9 @@ namespace Business.Services
             _emailService = emailService;
         }
 
-        public Task<Guid> GetUserByLoginAsync(string email)
-        {
-            return Context.Authentications.Where(x => x.Login == email).Select(x => x.UserId).FirstOrDefaultAsync();
-        }
-
         public Task<Guid> GetUserIdByPasswLoginAsync(string login, string password)
         {
             return Context.Authentications.Where(x => x.Login == login && x.Password == password).Select(x => x.UserId).FirstOrDefaultAsync();
-        }
-
-        public Task<Authentication> GetUserByIdAsync(Guid id)
-        {
-            return Context.Authentications.Where(x => x.UserId == id).FirstOrDefaultAsync();
         }
 
         public async Task<bool> RegisterUserAsync(UserCredentials credentials)
