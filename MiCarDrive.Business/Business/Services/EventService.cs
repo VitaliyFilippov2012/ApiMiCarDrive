@@ -189,9 +189,9 @@ namespace Business.Services
             }
         }
 
-        public async Task<CarEvent> GetEventByIdAsync(Guid idEvent)
+        public async Task<Event> GetEventByIdAsync(Guid idEvent)
         {
-            return await Context.CarEvents.Where(x => x.EventId == idEvent).FirstOrDefaultAsync();
+            return (await Context.CarEvents.Where(x => x.EventId == idEvent).FirstOrDefaultAsync()).ToDto();
         }
 
         public async Task<Refill> GetFuelEventByIdAsync(Guid eventId)

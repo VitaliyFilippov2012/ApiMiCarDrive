@@ -1,84 +1,113 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Threading.Tasks;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MiWebApi.Aspects;
+using Shared.Models;
 
 namespace MiWebApi.Controllers
 {
     [ApiController]
     public class EventsController : Controller
     {
-        // GET: EventsController
-        public ActionResult Index()
+        private readonly IEventsService _eventsService;
+
+        public EventsController(IEventsService eventsService)
         {
-            return View();
+            _eventsService = eventsService;
         }
 
-        // GET: EventsController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("events/carId/{carId:guid}")]
+        public async Task<EventsWrapper> GetAllCarEventsAsync(Guid carId)
         {
-            return View();
+            return new EventsWrapper
+            {
+                Events = await _eventsService.GetCarEventsAsync(carId),
+                Refills = await _eventsService.GetCarFuelsEventsAsync(carId),
+                EventServices = await _eventsService.GetCarServiceEventsAsync(carId)
+            };
         }
 
-        // GET: EventsController/Create
-        public ActionResult Create()
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("event/{eventId}")]
+        public async Task<Event> GetEventById(Guid eventId)
         {
-            return View();
+            return await _eventsService.GetEventByIdAsync(eventId);
         }
 
-        // POST: EventsController/Create
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("refill/{eventId}")]
+        public async Task<Refill> GetRefillById(Guid eventId)
+        {
+            return await _eventsService.GetFuelEventByIdAsync(eventId);
+        }
+
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("service/{eventId}")]
+        public async Task<EventService> GetServicesById(Guid eventId)
+        {
+            return await _eventsService.GetServiceEventByIdAsync(eventId);
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [AuthenticationFilter]
+        [Route("create/event")]
+        public async Task<bool> CreateEvent([FromBody] Event carEvent)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return await _eventsService.CreateCarEventAsync(carEvent);
         }
 
-        // GET: EventsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: EventsController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [AuthenticationFilter]
+        [Route("create/refill")]
+        public async Task<bool> CreateFuel([FromBody] Refill refillEvent)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return await _eventsService.CreateCarFuelEventAsync(refillEvent);
         }
 
-        // GET: EventsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EventsController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [AuthenticationFilter]
+        [Route("create/service")]
+        public async Task<bool> CreateServices([FromBody] EventService eventService)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return await _eventsService.CreateCarServiceEventAsync(eventService);
+        }
+
+        [HttpPut]
+        [AuthenticationFilter]
+        [Route("update/event")]
+        public async Task<bool> UpdateEvent([FromBody] Event carEvent)
+        {
+            return await _eventsService.UpdateCarEventAsync(carEvent);
+        }
+
+        [HttpPut]
+        [AuthenticationFilter]
+        [Route("update/refill")]
+        public async Task<bool> UpdateFuel([FromBody] Refill refillEvent)
+        {
+            return await _eventsService.UpdateCarFuelEventAsync(refillEvent);
+        }
+
+        [HttpPut]
+        [AuthenticationFilter]
+        [Route("update/service")]
+        public async Task<bool> UpdateServices([FromBody] EventService eventService)
+        {
+            return await _eventsService.UpdateCarServiceEventAsync(eventService);
+        }
+
+        [HttpDelete]
+        [AuthenticationFilter]
+        [Route("event/{eventId}")]
+        public async Task<bool> DeleteEventById(Guid eventId)
+        {
+            return await _eventsService.DeleteCarEventAsync(eventId);
         }
     }
 }

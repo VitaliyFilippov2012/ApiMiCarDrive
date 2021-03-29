@@ -6,15 +6,10 @@ namespace MiWebApi.Aspects
 {
     public class AuthenticationFilterAttribute : ActionFilterAttribute
     {
-        private const string TokenParameterName = "Token";
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             await base.OnActionExecutionAsync(context, next);
-            var headers = context.HttpContext.Request.Headers;
-            if (!headers.TryGetValue(TokenParameterName, out var token))
-                return;
-
-            if (!TokenServiceHelper.ValidateToken(token))
+            if (!TokenServiceHelper.ValidateToken(RequestHelper.GetTokenFromRequest(context.HttpContext.Request)))
                 context.HttpContext.Response.StatusCode = 401;
         }
     }
