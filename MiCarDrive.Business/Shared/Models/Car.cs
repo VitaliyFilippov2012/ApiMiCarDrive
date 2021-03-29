@@ -6,8 +6,8 @@ namespace Shared.Models
     public class Car
     {
         public Guid? CarId { get; set; }
-        public Guid TypeFuelId { get; set; }
-        public Guid TypeTransmissionId { get; set; }
+        public Guid FuelTypeId { get; set; }
+        public Guid TransmissionTypeId { get; set; }
         public string Mark { get; set; }
         public string Model { get; set; }
         public int VolumeEngine { get; set; }

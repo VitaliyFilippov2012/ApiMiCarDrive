@@ -67,8 +67,7 @@ namespace Business.Services
                 return false;
             authUser.Password = credentials.Password;
             await Context.SaveChangesAsync();
-            var encryptMessage = credentials.Password.Split("MiCarDrive");
-            var message = $"Your new password: {encryptMessage[1]}";
+            var message = $"Your new password: {credentials.Password}";
             await _emailService.SendEmailMessageAsync(message, credentials.Login);
             return true;
         }
