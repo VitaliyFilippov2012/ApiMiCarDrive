@@ -256,7 +256,7 @@ namespace DBContext.Context
                     .IsUnicode(false)
                     .HasColumnName("NAME");
 
-                entity.Property(e => e.TypeServiceId).HasColumnName("TYPE_SERVICE_ID");
+                entity.Property(e => e.ServiceTypeId).HasColumnName("TYPE_SERVICE_ID");
 
                 entity.HasOne(d => d.Event)
                     .WithMany(p => p.CarServices)
@@ -265,7 +265,7 @@ namespace DBContext.Context
 
                 entity.HasOne(d => d.TypeService)
                     .WithMany(p => p.CarServices)
-                    .HasForeignKey(d => d.TypeServiceId)
+                    .HasForeignKey(d => d.ServiceTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_SERVICES_TYPESERVICES");
             });

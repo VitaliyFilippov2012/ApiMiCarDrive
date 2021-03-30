@@ -14,7 +14,7 @@ namespace DBContext.Models
 
         public Guid ServiceId { get; set; }
         public Guid EventId { get; set; }
-        public Guid TypeServiceId { get; set; }
+        public Guid ServiceTypeId { get; set; }
         public string Name { get; set; }
 
         public virtual CarEvent Event { get; set; }
