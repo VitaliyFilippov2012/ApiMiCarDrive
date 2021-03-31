@@ -114,6 +114,14 @@ namespace Business.AutoMapper
             return refillDto;
         }
 
+        public static Refill ToRefillDto(this CarEvent carEvent, DBContext.Models.Refill refill)
+        {
+            var refillDto = ToDto<CarEvent, Refill>(carEvent);
+            refillDto.Volume = refill.Volume;
+            refillDto.RefillId = refill.RefillId;
+            return refillDto;
+        }
+
         public static IEnumerable<Refill> ToRefillDtoList(this IEnumerable<CarEvent> carEvents)
         {
             return carEvents.Select(x=>x.ToRefillDto());
@@ -124,7 +132,17 @@ namespace Business.AutoMapper
             var serviceDto = ToDto<CarEvent, EventService>(carEvent);
             var service = carEvent.CarServices.First();
             serviceDto.ServiceId = service.ServiceId;
-            serviceDto.TypeServiceId = service.TypeServiceId;
+            serviceDto.ServiceTypeId = service.ServiceTypeId;
+            serviceDto.Name = service.Name;
+            serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();
+            return serviceDto;
+        }
+
+        public static EventService ToServiceDto(this CarEvent carEvent, CarService service)
+        {
+            var serviceDto = ToDto<CarEvent, EventService>(carEvent);
+            serviceDto.ServiceId = service.ServiceId;
+            serviceDto.ServiceTypeId = service.ServiceTypeId;
             serviceDto.Name = service.Name;
             serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();
             return serviceDto;

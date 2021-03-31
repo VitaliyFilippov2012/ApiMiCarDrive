@@ -30,20 +30,30 @@ namespace Business.Services
             return (await allCarEvents.Where(x => !refillIds.Union(serviceIds).Contains(x.EventId)).ToListAsync()).ToDtoList();
         }
 
-        public async Task<IEnumerable<Refill>> GetCarFuelsEventsAsync(Guid carId)
+        public async Task<IEnumerable<Refill>> GetCarRefillsEventsAsync(Guid carId)
         {
-            return (await Context.CarEvents.Include(x => x.UserCar).Include(x => x.Refills).Where(x => x.UserCar.CarId == carId).ToListAsync()).ToRefillDtoList();
+            var query = from e in Context.CarEvents
+                join car in Context.UsersCars on e.UserCarId equals car.UserCarId
+                join r in Context.Refills on e.EventId equals r.EventId
+                where car.CarId == carId
+                select e.ToRefillDto(r);
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<EventService>> GetCarServiceEventsAsync(Guid carId)
         {
-            var events = (await Context.CarEvents.Include(x => x.UserCar).Include(x => x.CarServices).Where(x => x.UserCar.CarId == carId).ToListAsync()).ToServiceDtoList().ToList();
+            var query = from e in Context.CarEvents
+                join car in Context.UsersCars on e.UserCarId equals car.UserCarId
+                join s in Context.CarServices on e.EventId equals s.EventId
+                where car.CarId == carId
+                select e.ToServiceDto(s);
+            var events = await query.ToListAsync();
             foreach (var e in events)
                 e.Details = await _detailsService.GetDetailsByServiceId(e.ServiceId);
 
             return events;
         }
-
+        
         public async Task<bool> DeleteCarEventAsync(Guid eventId)
         {
             using (var transaction = Context.Database.BeginTransaction())
@@ -102,7 +112,9 @@ namespace Business.Services
 
                     if (serviceEvent.Details?.Any() == true)
                     {
-                        await Context.Details.AddRangeAsync(serviceEvent.Details.ToEntityList());
+                        var details = serviceEvent.Details.ToEntityList();
+                        foreach (var detail in details)
+                            await Context.Details.AddAsync(detail);
                         await Context.SaveChangesAsync();
                     }
 
@@ -191,7 +203,7 @@ namespace Business.Services
 
         public async Task<Event> GetEventByIdAsync(Guid idEvent)
         {
-            return (await Context.CarEvents.Where(x => x.EventId == idEvent).FirstOrDefaultAsync()).ToDto();
+            return (await Context.CarEvents.Include(x=>x.UserCar).Where(x => x.EventId == idEvent).FirstOrDefaultAsync()).ToDto();
         }
 
         public async Task<Refill> GetFuelEventByIdAsync(Guid eventId)

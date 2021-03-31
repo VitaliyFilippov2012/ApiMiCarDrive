@@ -18,7 +18,7 @@ namespace Business.Interfaces
 
         Task<IEnumerable<Type>> GetTypeEventsAsync();
 
-        Task<IEnumerable<Refill>> GetCarFuelsEventsAsync(Guid carId);
+        Task<IEnumerable<Refill>> GetCarRefillsEventsAsync(Guid carId);
 
         Task<IEnumerable<EventService>> GetCarServiceEventsAsync(Guid carId);
 

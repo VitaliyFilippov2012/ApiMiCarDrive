@@ -32,6 +32,7 @@ namespace Business.AutoMapper
                 UserMapping();
                 EventMapping();
                 CarMapping();
+                DetailMapping();
             }
 
             private void UserMapping()

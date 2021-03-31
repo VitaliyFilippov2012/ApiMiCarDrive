@@ -25,7 +25,7 @@ namespace MiWebApi.Controllers
             return new EventsWrapper
             {
                 Events = await _eventsService.GetCarEventsAsync(carId),
-                Refills = await _eventsService.GetCarFuelsEventsAsync(carId),
+                Refills = await _eventsService.GetCarRefillsEventsAsync(carId),
                 EventServices = await _eventsService.GetCarServiceEventsAsync(carId)
             };
         }

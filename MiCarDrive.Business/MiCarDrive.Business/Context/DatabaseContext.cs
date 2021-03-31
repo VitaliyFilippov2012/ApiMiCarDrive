@@ -233,7 +233,7 @@ namespace DBContext.Context
                 entity.HasOne(d => d.UserCar)
                     .WithMany(p => p.CarEvents)
                     .HasForeignKey(d => d.UserCarId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_EVENTS_USERSCARS");
             });
 
@@ -295,7 +295,7 @@ namespace DBContext.Context
                 entity.HasOne(d => d.Car)
                     .WithMany(p => p.Details)
                     .HasForeignKey(d => d.CarId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_DETAILS_CARS");
 
                 entity.HasOne(d => d.Service)
@@ -393,13 +393,13 @@ namespace DBContext.Context
                 entity.HasOne(d => d.PhotoArchive)
                     .WithMany(p => p.PhotoPhotoArchives)
                     .HasForeignKey(d => d.PhotoArchiveId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PHOTO_PHOTOARCHIVE_PHOTO");
 
                 entity.HasOne(d => d.Photo)
                     .WithMany(p => p.PhotoPhotoArchives)
                     .HasForeignKey(d => d.PhotoId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PHOTO_PHOTOARCHIVE_PHOTOARCHIVE");
             });
 
@@ -566,7 +566,7 @@ namespace DBContext.Context
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UsersCars)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_USERCARS_USER");
             });
 
@@ -584,7 +584,7 @@ namespace DBContext.Context
                 entity.HasOne(d => d.Right)
                     .WithMany(p => p.UsersCarsRights)
                     .HasForeignKey(d => d.RightId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_USERSCARS_RIGHTS_RIGHT");
 
                 entity.HasOne(d => d.UserCar)
@@ -608,7 +608,7 @@ namespace DBContext.Context
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.UsersCarsRoles)
                     .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_USERSCARS_ROLES_ROLE");
 
                 entity.HasOne(d => d.UserCar)
