@@ -8,7 +8,10 @@ namespace Business.Services
 {
     public class EmailService : IEmailService
     {
-        private const string _emailFrom = "iDonateBelarus@yandex.ru";
+        private const string _emailFrom = "MiCarDrive2021@yandex.by";
+        private const string _emailPassword = "MiCarDrive";
+        private const string _phone= "+375 (29) 895-46-35";
+
 
         public async Task SendEmailMessageAsync(string message, string emailTo)
         {
@@ -17,11 +20,13 @@ namespace Business.Services
             var m = new MailMessage(from, to)
             {
                 Subject = "Heeeyyy my friend",
-                Body = message
+                Body = $"Здравствуйте!<br>{message}<br> При возникновении вопросов обращайтесь на почту <h2><a href={_emailFrom}>{_emailFrom}</a></h2> или обратитесь в поддержку по телефону <h2>{_phone}</h2>.<br> До скорого!<br> Magnificent",
             };
-            var smtp = new SmtpClient("smtp.yandex.ru", 587)
+            m.IsBodyHtml = true;
+
+            var smtp = new SmtpClient("smtp.yandex.by", 587)
             {
-                Credentials = new NetworkCredential(_emailFrom, "igiveapieceofheart"),
+                Credentials = new NetworkCredential(_emailFrom, _emailPassword),
                 EnableSsl = true
             };
             var sending = true;
