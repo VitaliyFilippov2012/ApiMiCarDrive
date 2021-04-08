@@ -130,6 +130,11 @@ namespace DBContext.Context
                     .IsUnicode(false)
                     .HasColumnName("COLOR");
 
+                entity.Property(e => e.RegistrationNumber)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("REGISTRATION_NUMBER");
+
                 entity.Property(e => e.FuelTypeId).HasColumnName("FUEL_TYPE_ID");
 
                 entity.Property(e => e.Mark)
