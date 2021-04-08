@@ -22,7 +22,7 @@ namespace DBContext.Models
         public int Power { get; set; }
         public bool? Active { get; set; }
         public string Vin { get; set; }
-        public string Comment { get; set; }
+        public string Color { get; set; }
         public Guid? PhotoArchiveId { get; set; }
         public int YearIssue { get; set; }
 

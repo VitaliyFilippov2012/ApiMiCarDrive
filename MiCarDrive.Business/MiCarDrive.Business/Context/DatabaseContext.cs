@@ -125,10 +125,10 @@ namespace DBContext.Context
                     .HasColumnName("ACTIVE")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Comment)
+                entity.Property(e => e.Color)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("COMMENT");
+                    .HasColumnName("COLOR");
 
                 entity.Property(e => e.FuelTypeId).HasColumnName("FUEL_TYPE_ID");
 
