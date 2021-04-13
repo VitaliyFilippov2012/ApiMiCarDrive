@@ -15,6 +15,7 @@ namespace DBContext.Models
 
         public Guid EventId { get; set; }
         public Guid EventTypeId { get; set; }
+        public string Name { get; set; }
         public Guid UserCarId { get; set; }
         public DateTime Date { get; set; }
         public decimal Costs { get; set; }

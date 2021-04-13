@@ -133,7 +133,6 @@ namespace Business.AutoMapper
             var service = carEvent.CarServices.First();
             serviceDto.ServiceId = service.ServiceId;
             serviceDto.ServiceTypeId = service.ServiceTypeId;
-            serviceDto.Name = service.Name;
             serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();
             return serviceDto;
         }
@@ -143,7 +142,6 @@ namespace Business.AutoMapper
             var serviceDto = ToDto<CarEvent, EventService>(carEvent);
             serviceDto.ServiceId = service.ServiceId;
             serviceDto.ServiceTypeId = service.ServiceTypeId;
-            serviceDto.Name = service.Name;
             serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();
             return serviceDto;
         }

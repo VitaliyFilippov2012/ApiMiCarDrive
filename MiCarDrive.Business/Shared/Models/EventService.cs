@@ -8,7 +8,6 @@ namespace Shared.Models
     {
         public Guid ServiceId { get; set; }
         public Guid ServiceTypeId { get; set; }
-        public string Name { get; set; }
         public IEnumerable<Detail> Details { get; set; }
     }
 }

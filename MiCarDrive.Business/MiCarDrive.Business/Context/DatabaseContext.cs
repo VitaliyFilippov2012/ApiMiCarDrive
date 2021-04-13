@@ -212,6 +212,12 @@ namespace DBContext.Context
                     .HasColumnType("date")
                     .HasColumnName("DATE");
 
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("NAME");
+
                 entity.Property(e => e.EventTypeId).HasColumnName("EVENT_TYPE_ID");
 
                 entity.Property(e => e.Mileage).HasColumnName("MILEAGE");
@@ -254,12 +260,6 @@ namespace DBContext.Context
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.EventId).HasColumnName("EVENT_ID");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("NAME");
 
                 entity.Property(e => e.ServiceTypeId).HasColumnName("TYPE_SERVICE_ID");
 

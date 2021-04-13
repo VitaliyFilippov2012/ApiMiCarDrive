@@ -7,6 +7,7 @@ namespace Shared.Models
     {
         public Guid EventId { get; set; }
         public Guid EventTypeId { get; set; }
+        public string Name { get; set; }
         public Guid UserCarId { get; set; }
         public Guid CarId { get; set; }
         public Guid UserId { get; set; }
