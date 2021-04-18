@@ -24,6 +24,19 @@ namespace MiWebApi.Controllers
         [Route("cars/userId")]
         public async Task<IEnumerable<Car>> GetCarsAsync()
         {
+            if (!Validate()) return null;
+            var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+            return await _carsService.GetAllUserCarsAsync(Guid.Parse(userId));
+        }
+
+        [HttpGet]
+        [AuthenticationFilter]
+        [Route("car/users")]
+        public async Task<IEnumerable<Car>> GetCarUsersAsync()
+        {
+            if (!Validate()) return null;
             var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return null;
@@ -44,6 +57,7 @@ namespace MiWebApi.Controllers
         [Route("car")]
         public async Task<Guid?> CreateCar([FromBody] Car car)
         {
+            if (!Validate()) return null;
             var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return null;
@@ -80,8 +94,9 @@ namespace MiWebApi.Controllers
         [HttpDelete]
         [AuthenticationFilter]
         [Route("fcm/deleteShareCar/{carId}")]
-        public async Task<bool> AddSharingCar(Guid carId)
+        public async Task<bool> DeleteShareCar(Guid carId)
         {
+            if (!Validate()) return false;
             var userId = TokenServiceHelper.GetUserId(RequestHelper.GetTokenFromRequest(HttpContext.Request));
             if (string.IsNullOrWhiteSpace(userId))
                 return false;

@@ -8,6 +8,7 @@ namespace Shared.Models
     public class UserInfo
     {
         public Guid UserId { get; set; }
+        public Guid UserCarId { get; set; }
         public string Gender { get; set; }
 
         [DateRange]

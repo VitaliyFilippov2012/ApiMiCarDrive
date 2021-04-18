@@ -24,9 +24,15 @@ namespace Business.Services
             _emailService = emailService;
         }
 
-        public async Task<IEnumerable<Car>> GetAllUserCarsAsync(Guid userid)
+        public async Task<IEnumerable<Car>> GetAllUserCarsAsync(Guid userId)
         {
-            return (await Context.UsersCars.Include(x => x.Car).Include(x => x.CarEvents).Where(x => x.UserId == userid).Select(x => x.Car).ToListAsync()).ToDtoList();
+            var query = from u in Context.UsersCars.Where(x=>x.UserId == userId)
+                join car in Context.Cars on u.CarId equals car.CarId
+                let usersCar = Context.UsersCars.Where(x => x.CarId == car.CarId).ToList()
+                let usersCarId = usersCar.Select(x => new { x.UserId, x.UserCarId}).ToList()
+                let users = usersCar.Select(x => x.User.ToDto(usersCarId.First(uc =>uc.UserId == x.UserId).UserCarId)).ToList()
+                select car.ToDto(users);
+            return await query.ToListAsync();
         }
 
         public async Task<Car> GetCarByIdAsync(Guid idCar)

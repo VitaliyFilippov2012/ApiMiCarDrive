@@ -68,7 +68,7 @@ namespace Business.Services
             authUser.Password = credentials.Password;
             await Context.SaveChangesAsync();
             var message = $"Your new password: {credentials.Password}";
-            await _emailService.SendEmailMessageAsync(message, credentials.Login);
+            //await _emailService.SendEmailMessageAsync(message, credentials.Login);
             return true;
         }
     }

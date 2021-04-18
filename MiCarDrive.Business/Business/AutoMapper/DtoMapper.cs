@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DBContext.Models;
 using Shared.Models;
@@ -30,6 +31,13 @@ namespace Business.AutoMapper
             return ToDto<Car, Shared.Models.Car>(car);
         }
 
+        public static Shared.Models.Car ToDto(this Car car, IEnumerable<UserInfo> users)
+        {
+            var dto = ToDto<Car, Shared.Models.Car>(car);
+            dto.Users = users;
+            return dto;
+        }
+
         public static IEnumerable<Shared.Models.Car> ToDtoList(this IEnumerable<Car> cars)
         {
             return cars.Select(x=>x.ToDto());
@@ -48,6 +56,13 @@ namespace Business.AutoMapper
         public static UserInfo ToDto(this User user)
         {
             return ToDto<User, UserInfo>(user);
+        }
+
+        public static UserInfo ToDto(this User user, Guid userCarId)
+        {
+            var dto = ToDto<User, UserInfo>(user);
+            dto.UserCarId = userCarId;
+            return dto;
         }
 
         public static IEnumerable<UserInfo> ToDtoList(this IEnumerable<User> users)
