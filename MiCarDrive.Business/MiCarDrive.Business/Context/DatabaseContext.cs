@@ -149,8 +149,6 @@ namespace DBContext.Context
                     .IsUnicode(false)
                     .HasColumnName("MODEL");
 
-                entity.Property(e => e.PhotoArchiveId).HasColumnName("PHOTO_ARCHIVE_ID");
-
                 entity.Property(e => e.Power).HasColumnName("POWER");
 
                 entity.Property(e => e.TransmissionTypeId).HasColumnName("TRANSMISSION_TYPE_ID");
@@ -170,11 +168,6 @@ namespace DBContext.Context
                     .HasForeignKey(d => d.FuelTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CARS_FUELTYPE");
-
-                entity.HasOne(d => d.PhotoArchive)
-                    .WithMany(p => p.Cars)
-                    .HasForeignKey(d => d.PhotoArchiveId)
-                    .HasConstraintName("FK_CARS_PHOTOARCHIVE");
 
                 entity.HasOne(d => d.TransmissionType)
                     .WithMany(p => p.Cars)

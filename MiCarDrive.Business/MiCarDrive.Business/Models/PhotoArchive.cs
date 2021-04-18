@@ -10,7 +10,6 @@ namespace DBContext.Models
         public PhotoArchive()
         {
             CarEvents = new HashSet<CarEvent>();
-            Cars = new HashSet<Car>();
             PhotoPhotoArchives = new HashSet<PhotoPhotoArchive>();
             Users = new HashSet<User>();
         }
@@ -19,7 +18,6 @@ namespace DBContext.Models
         public string Path { get; set; }
 
         public virtual ICollection<CarEvent> CarEvents { get; set; }
-        public virtual ICollection<Car> Cars { get; set; }
         public virtual ICollection<PhotoPhotoArchive> PhotoPhotoArchives { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }

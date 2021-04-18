@@ -24,11 +24,9 @@ namespace DBContext.Models
         public string Vin { get; set; }
         public string Color { get; set; }
         public string RegistrationNumber { get; set; }
-        public Guid? PhotoArchiveId { get; set; }
         public int YearIssue { get; set; }
 
         public virtual FuelType FuelType { get; set; }
-        public virtual PhotoArchive PhotoArchive { get; set; }
         public virtual TransmissionType TransmissionType { get; set; }
         public virtual ICollection<Detail> Details { get; set; }
         public virtual ICollection<UsersCar> UsersCars { get; set; }
