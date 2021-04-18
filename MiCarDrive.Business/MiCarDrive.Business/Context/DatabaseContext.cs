@@ -263,6 +263,8 @@ namespace DBContext.Context
 
                 entity.Property(e => e.ServiceTypeId).HasColumnName("TYPE_SERVICE_ID");
 
+                entity.Property(e => e.RepeatInterval).HasColumnName("REPEAT_INTERVAL");
+
                 entity.HasOne(d => d.Event)
                     .WithMany(p => p.CarServices)
                     .HasForeignKey(d => d.EventId)

@@ -15,6 +15,7 @@ namespace DBContext.Models
         public Guid ServiceId { get; set; }
         public Guid EventId { get; set; }
         public Guid ServiceTypeId { get; set; }
+        public long? RepeatInterval { get; set; }
 
         public virtual CarEvent Event { get; set; }
         public virtual ServiceType TypeService { get; set; }

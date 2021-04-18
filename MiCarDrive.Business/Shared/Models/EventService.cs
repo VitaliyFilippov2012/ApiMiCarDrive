@@ -8,6 +8,7 @@ namespace Shared.Models
     {
         public Guid ServiceId { get; set; }
         public Guid ServiceTypeId { get; set; }
+        public long? RepeatInterval { get; set; }
         public IEnumerable<Detail> Details { get; set; }
     }
 }
