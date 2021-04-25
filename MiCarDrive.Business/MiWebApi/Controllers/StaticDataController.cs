@@ -16,12 +16,14 @@ namespace MiWebApi.Controllers
         private readonly IUsersService _userService;
         private readonly IServicesService _serviceService;
         private readonly IEventsService _eventsService;
+        private readonly IReferenceService _referenceService;
 
-        public StaticDataController(IUsersService userService, IServicesService serviceService, IEventsService eventsService)
+        public StaticDataController(IUsersService userService, IServicesService serviceService, IEventsService eventsService, IReferenceService referenceService)
         {
             _userService = userService;
             _serviceService = serviceService;
             _eventsService = eventsService;
+            _referenceService = referenceService;
         }
 
         [HttpGet]
@@ -39,20 +41,13 @@ namespace MiWebApi.Controllers
             var user = (await _userService.GetUsersAsync(filter)).FirstOrDefault();
             var result = new StaticDataWrapper()
             {
-                UserInfo = new UserInfo()
-                {
-                    UserId = user.UserId,
-                    Birthday = user.Birthday,
-                    City = user.City,
-                    Lastname = user.Lastname,
-                    Name = user.Name,
-                    Patronymic = user.Patronymic,
-                    Phone = user.Phone,
-                    Gender = user.Gender,
-                    PhotoArchiveId = user.PhotoArchiveId
-                },
-                TypeServices = await _serviceService.GetServiceTypes(),
-                TypeEvents = await _eventsService.GetTypeEventsAsync()
+                UserInfo = user,
+                ServiceTypes = await _serviceService.GetServiceTypes(),
+                EventTypes = await _eventsService.GetTypeEventsAsync(),
+                TransmissionTypes = await _referenceService.GetTransmissionTypesAsync(),
+                FuelTypes = await _referenceService.GetFuelTypesAsync(),
+                Roles = await _referenceService.GetUserRolesAsync(),
+                Rights = await _referenceService.GetUserRightsAsync()
             };
 
             return result;

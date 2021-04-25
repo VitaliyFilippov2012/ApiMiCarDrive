@@ -33,12 +33,25 @@ namespace Business.AutoMapper
                 EventMapping();
                 CarMapping();
                 DetailMapping();
+                ReferenceDataMapping();
             }
 
             private void UserMapping()
             {
                 CreateMap<User, UserInfo>();
                 CreateMap<UserInfo, User>();
+            }
+
+            private void ReferenceDataMapping()
+            {
+                CreateMap<TransmissionType, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.TransmissionTypeId));
+                CreateMap<FuelType, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FuelTypeId));
+                CreateMap<Role, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RoleId));
+                CreateMap<Right, Type>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RightId));
             }
 
             private void CarMapping()

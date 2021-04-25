@@ -19,8 +19,8 @@ namespace Botstraper
             services.AddScoped<IServicesService, ServicesService>();
             services.AddScoped<IDetailsService, DetailsService>();
             services.AddScoped<IEventsService, EventsService>();
+            services.AddScoped<IReferenceService, ReferenceService>();
             //services.AddScoped<IAuditService, AuditService>();
-            //services.AddScoped<ISoapService, SoapService>();
             services.AddScoped<ICryptographyService, CryptographyService>();
         }
     }

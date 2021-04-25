@@ -8,8 +8,16 @@ namespace Shared.Models
     {
         public UserInfo UserInfo { get; set; }
 
-        public IEnumerable<Type> TypeServices { get; set; }
+        public IEnumerable<Type> ServiceTypes { get; set; }
 
-        public IEnumerable<Type> TypeEvents { get; set; }
+        public IEnumerable<Type> FuelTypes { get; set; }
+
+        public IEnumerable<Type> TransmissionTypes { get; set; }
+
+        public IEnumerable<Type> EventTypes { get; set; }
+
+        public IEnumerable<Type> Rights { get; set; }
+
+        public IEnumerable<Type> Roles { get; set; }
     }
 }
