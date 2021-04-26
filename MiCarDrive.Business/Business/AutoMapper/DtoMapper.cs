@@ -53,9 +53,11 @@ namespace Business.AutoMapper
             return ToDto(car, entity);
         }
 
-        public static UserInfo ToDto(this User user)
+        public static UserInfo ToDto(this User user, string email)
         {
-            return ToDto<User, UserInfo>(user);
+            var userInfo = ToDto<User, UserInfo>(user);
+            userInfo.Email = email;
+            return userInfo;
         }
 
         public static UserInfo ToDto(this User user, Guid userCarId)
@@ -63,11 +65,6 @@ namespace Business.AutoMapper
             var dto = ToDto<User, UserInfo>(user);
             dto.UserCarId = userCarId;
             return dto;
-        }
-
-        public static IEnumerable<UserInfo> ToDtoList(this IEnumerable<User> users)
-        {
-            return users.Select(x => x.ToDto());
         }
 
         public static User ToEntity(this UserInfo userInfo)

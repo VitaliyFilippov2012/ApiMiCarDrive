@@ -86,11 +86,15 @@ namespace DBContext.Context
 
             modelBuilder.Entity<Authentication>(entity =>
             {
-                entity.HasKey(e => e.Login);
+                entity.HasKey(e => e.UserId);
 
                 entity.ToTable("AUTHENTICATION");
 
+                entity.HasIndex(e => e.Login, "UQ__LOGIN_TY__D9C1FA00C38D47B8")
+                    .IsUnique();
+
                 entity.Property(e => e.Login)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("LOGIN");
 
@@ -104,8 +108,8 @@ namespace DBContext.Context
                     .HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Authentications)
-                    .HasForeignKey(d => d.UserId)
+                    .WithOne(p => p.Authentication)
+                    .HasForeignKey(nameof(Authentication.User))
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_AUTHENTICATION_USER");
             });

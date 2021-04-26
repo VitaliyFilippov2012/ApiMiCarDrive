@@ -10,7 +10,6 @@ namespace DBContext.Models
         public User()
         {
             ActionAudits = new HashSet<ActionAudit>();
-            Authentications = new HashSet<Authentication>();
             UsersCars = new HashSet<UsersCar>();
         }
 
@@ -25,8 +24,9 @@ namespace DBContext.Models
         public Guid? PhotoArchiveId { get; set; }
 
         public virtual PhotoArchive PhotoArchive { get; set; }
+        public virtual Authentication Authentication { get; set; }
+
         public virtual ICollection<ActionAudit> ActionAudits { get; set; }
-        public virtual ICollection<Authentication> Authentications { get; set; }
         public virtual ICollection<UsersCar> UsersCars { get; set; }
     }
 }

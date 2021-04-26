@@ -20,7 +20,8 @@ namespace Business.Services
 
         public async Task<IEnumerable<UserInfo>> GetUsersAsync(UserFilter userFilter)
         {
-            return (await Context.Users.Where(userFilter).ToListAsync()).ToDtoList();
+            return await Context.Users.Include(x => x.Authentication).Where(userFilter)
+                .Select(x => x.ToDto(x.Authentication.Login)).ToListAsync();
         }
 
         public async Task<Guid> CreateNewUserAsync(UserInfo user)
