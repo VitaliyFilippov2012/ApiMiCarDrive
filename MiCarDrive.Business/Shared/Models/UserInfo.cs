@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Shared.Aspects;
 
@@ -21,5 +22,8 @@ namespace Shared.Models
         public string City { get; set; }
         public string Email { get; set; }
         public Guid? PhotoArchiveId { get; set; }
+
+        public IEnumerable<Guid> RightIds { get; set; }
+        public IEnumerable<Guid> RoleIds { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Shared.Models;
 using Car = DBContext.Models.Car;
 using Detail = Shared.Models.Detail;
 using Refill = Shared.Models.Refill;
+using Type = System.Type;
 
 namespace Business.AutoMapper
 {
@@ -64,6 +65,15 @@ namespace Business.AutoMapper
         {
             var dto = ToDto<User, UserInfo>(user);
             dto.UserCarId = userCarId;
+            return dto;
+        }
+
+        public static UserInfo ToDto(this User user, Guid userCarId, IEnumerable<Guid> rightIds, IEnumerable<Guid> roleIds)
+        {
+            var dto = ToDto<User, UserInfo>(user);
+            dto.UserCarId = userCarId;
+            dto.RightIds = rightIds;
+            dto.RoleIds = roleIds;
             return dto;
         }
 

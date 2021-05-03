@@ -8,6 +8,7 @@ using DBContext.Context;
 using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Car = Shared.Models.Car;
+using Type = Shared.Models.Type;
 
 namespace Business.Services
 {
@@ -26,12 +27,12 @@ namespace Business.Services
 
         public async Task<IEnumerable<Car>> GetAllUserCarsAsync(Guid userId)
         {
-            var query = from u in Context.UsersCars.Where(x=>x.UserId == userId)
-                join car in Context.Cars on u.CarId equals car.CarId
-                let usersCar = Context.UsersCars.Where(x => x.CarId == car.CarId).ToList()
-                let usersCarId = usersCar.Select(x => new { x.UserId, x.UserCarId}).ToList()
-                let users = usersCar.Select(x => x.User.ToDto(usersCarId.First(uc =>uc.UserId == x.UserId).UserCarId)).ToList()
-                select car.ToDto(users);
+            var query = from u in Context.UsersCars.Where(x => x.UserId == userId)
+                        join car in Context.Cars on u.CarId equals car.CarId
+                        let usersCar = Context.UsersCars.Include(x => x.UsersCarsRights).Include(x => x.UsersCarsRoles).Where(x => x.CarId == car.CarId).ToList()
+                        let usersCarId = usersCar.Select(x => new { x.UserId, x.UserCarId }).ToList()
+                        let users = usersCar.Select(x => x.User.ToDto(usersCarId.First(uc => uc.UserId == x.UserId).UserCarId, x.UsersCarsRights.Select(r => r.RightId).ToList(), x.UsersCarsRoles.Select(r=>r.RoleId).ToList())).ToList()
+                        select car.ToDto(users);
             return await query.ToListAsync();
         }
 
