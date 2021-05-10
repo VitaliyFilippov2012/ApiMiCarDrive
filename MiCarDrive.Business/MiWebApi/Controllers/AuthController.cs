@@ -43,5 +43,12 @@ namespace MiWebApi.Controllers
                 return Ok();
             return BadRequest();
         }
+
+        [HttpGet]
+        [Route("server/isAvailable")]
+        public IActionResult IsServerAvailable()
+        {
+            return Ok();
+        }
     }
 }
