@@ -41,7 +41,7 @@ namespace DBContext.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-V2B67VR\\VITALISQL;Database=MiCarDrive;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-1Q4FC7G;Database=MiCarDrive;Trusted_Connection=True;");
             }
         }
 
