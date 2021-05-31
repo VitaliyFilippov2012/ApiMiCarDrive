@@ -4,14 +4,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBContext", "MiCarDrive.Business\DBContext.csproj", "{8A23356F-BC95-418D-8583-3C2801EB2921}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF86A9DD-5249-43C6-AB56-8FBC2C5FB288} = {BF86A9DD-5249-43C6-AB56-8FBC2C5FB288}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{B856A05D-C202-44A0-9B1D-75D4AE11CCAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Botstraper", "Botstraper\Botstraper.csproj", "{B32FA644-C719-458D-85B2-1B102D9100ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiWebApi", "MiWebApi\MiWebApi.csproj", "{085C59E7-FA0C-4F35-8640-D9008D44B23B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B856A05D-C202-44A0-9B1D-75D4AE11CCAA} = {B856A05D-C202-44A0-9B1D-75D4AE11CCAA}
+		{8A23356F-BC95-418D-8583-3C2801EB2921} = {8A23356F-BC95-418D-8583-3C2801EB2921}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{BF86A9DD-5249-43C6-AB56-8FBC2C5FB288}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{BF86A9DD-5249-43C6-AB56-8FBC2C5FB288}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

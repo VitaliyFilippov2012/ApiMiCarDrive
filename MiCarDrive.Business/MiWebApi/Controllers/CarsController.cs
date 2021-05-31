@@ -86,9 +86,9 @@ namespace MiWebApi.Controllers
         [Route("fcm/addShareCar/{json}")]
         public async Task<IActionResult> AddSharingCar(string json)
         {
-            if (await _carsService.AddShareCarAsync(json))
+            //if (await _carsService.AddShareCarAsync(json))
                 return View("CarAddedView");
-            return View("OopsView");
+            //return View("OopsView");
         }
 
         [HttpDelete]
