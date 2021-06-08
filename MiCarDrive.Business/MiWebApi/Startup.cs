@@ -24,7 +24,7 @@ namespace MiWebApi
             services.AddMvc();
             ConfigureAuthOptions(services);
             services.AddControllers();
-            ModuleInitializer.ConfigureIoC(services);
+            ModuleInitializer.Initialize(services);
         }
 
         private void ConfigureAuthOptions(IServiceCollection services)

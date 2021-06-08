@@ -26,7 +26,6 @@ namespace DBContext.Models
         public string AddressStation { get; set; }
 
         public virtual EventType EventType { get; set; }
-        public virtual PhotoArchive PhotoArchive { get; set; }
         public virtual UsersCar UserCar { get; set; }
         public virtual ICollection<CarService> CarServices { get; set; }
         public virtual ICollection<Refill> Refills { get; set; }

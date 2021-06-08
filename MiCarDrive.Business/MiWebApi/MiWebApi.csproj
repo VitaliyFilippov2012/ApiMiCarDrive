@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Botstraper\Botstraper.csproj" />
+    <ProjectReference Include="..\Botstraper\Bootstrapper.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 

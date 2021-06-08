@@ -83,17 +83,17 @@ namespace MiWebApi.Controllers
         }
 
         [HttpGet]
-        [Route("fcm/addShareCar/{json}")]
+        [Route("addShareCar/{json}")]
         public async Task<IActionResult> AddSharingCar(string json)
         {
-            //if (await _carsService.AddShareCarAsync(json))
+            if (await _carsService.AddShareCarAsync(json))
                 return View("CarAddedView");
-            //return View("OopsView");
+            return View("OopsView");
         }
 
         [HttpDelete]
         [AuthenticationFilter]
-        [Route("fcm/deleteShareCar/{carId}")]
+        [Route("deleteShareCar/{carId}")]
         public async Task<bool> DeleteShareCar(Guid carId)
         {
             if (!Validate()) return false;

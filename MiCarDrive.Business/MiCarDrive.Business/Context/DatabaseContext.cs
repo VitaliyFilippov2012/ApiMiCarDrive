@@ -24,9 +24,6 @@ namespace DBContext.Context
         public virtual DbSet<Detail> Details { get; set; }
         public virtual DbSet<EventType> EventTypes { get; set; }
         public virtual DbSet<FuelType> FuelTypes { get; set; }
-        public virtual DbSet<Photo> Photos { get; set; }
-        public virtual DbSet<PhotoArchive> PhotoArchives { get; set; }
-        public virtual DbSet<PhotoPhotoArchive> PhotoPhotoArchives { get; set; }
         public virtual DbSet<Refill> Refills { get; set; }
         public virtual DbSet<Right> Rights { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -233,11 +230,6 @@ namespace DBContext.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EVENTS_TYPEEVENTS");
 
-                entity.HasOne(d => d.PhotoArchive)
-                    .WithMany(p => p.CarEvents)
-                    .HasForeignKey(d => d.PhotoArchiveId)
-                    .HasConstraintName("FK_EVENTS_PHOTOARCHIVE");
-
                 entity.HasOne(d => d.UserCar)
                     .WithMany(p => p.CarEvents)
                     .HasForeignKey(d => d.UserCarId)
@@ -342,69 +334,6 @@ namespace DBContext.Context
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("NAME");
-            });
-
-            modelBuilder.Entity<Photo>(entity =>
-            {
-                entity.ToTable("PHOTO");
-
-                entity.Property(e => e.PhotoId)
-                    .HasColumnName("PHOTO_ID")
-                    .HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Expansion)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("EXPANSION");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("NAME");
-            });
-
-            modelBuilder.Entity<PhotoArchive>(entity =>
-            {
-                entity.ToTable("PHOTO_ARCHIVE");
-
-                entity.HasIndex(e => e.Path, "UQ__PHOTO_AR__5985D08DF3D30FB3")
-                    .IsUnique();
-
-                entity.Property(e => e.PhotoArchiveId)
-                    .HasColumnName("PHOTO_ARCHIVE_ID")
-                    .HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Path)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("PATH");
-            });
-
-            modelBuilder.Entity<PhotoPhotoArchive>(entity =>
-            {
-                entity.HasKey(e => new { e.PhotoArchiveId, e.PhotoId })
-                    .HasName("PK_PHOTO_PHOTOARCHIVE");
-
-                entity.ToTable("PHOTO_PHOTO_ARCHIVE");
-
-                entity.Property(e => e.PhotoArchiveId).HasColumnName("PHOTO_ARCHIVE_ID");
-
-                entity.Property(e => e.PhotoId).HasColumnName("PHOTO_ID");
-
-                entity.HasOne(d => d.PhotoArchive)
-                    .WithMany(p => p.PhotoPhotoArchives)
-                    .HasForeignKey(d => d.PhotoArchiveId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_PHOTO_PHOTOARCHIVE_PHOTO");
-
-                entity.HasOne(d => d.Photo)
-                    .WithMany(p => p.PhotoPhotoArchives)
-                    .HasForeignKey(d => d.PhotoId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK_PHOTO_PHOTOARCHIVE_PHOTOARCHIVE");
             });
 
             modelBuilder.Entity<Refill>(entity =>
@@ -538,12 +467,7 @@ namespace DBContext.Context
                     .HasMaxLength(20)
                     .HasColumnName("PHONE");
 
-                entity.Property(e => e.PhotoArchiveId).HasColumnName("PHOTO_ARCHIVE_ID");
-
-                entity.HasOne(d => d.PhotoArchive)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.PhotoArchiveId)
-                    .HasConstraintName("FK_USERS_PHOTOARCHIVE");
+                entity.Property(e => e.PhotoPath).HasColumnName("PHOTO_PATH");
             });
 
             modelBuilder.Entity<UsersCar>(entity =>

@@ -21,7 +21,7 @@ namespace Shared.Models
         public string Phone { get; set; }
         public string City { get; set; }
         public string Email { get; set; }
-        public Guid? PhotoArchiveId { get; set; }
+        public string PhotoPath { get; set; }
 
         public IEnumerable<Guid> RightIds { get; set; }
         public IEnumerable<Guid> RoleIds { get; set; }

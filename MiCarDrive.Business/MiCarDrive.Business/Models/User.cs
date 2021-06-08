@@ -21,9 +21,7 @@ namespace DBContext.Models
         public string Patronymic { get; set; }
         public string Phone { get; set; }
         public string City { get; set; }
-        public Guid? PhotoArchiveId { get; set; }
-
-        public virtual PhotoArchive PhotoArchive { get; set; }
+        public string PhotoPath { get; set; }
         public virtual Authentication Authentication { get; set; }
 
         public virtual ICollection<ActionAudit> ActionAudits { get; set; }

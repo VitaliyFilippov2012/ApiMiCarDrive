@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBContext", "MiCarDrive.Bus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{B856A05D-C202-44A0-9B1D-75D4AE11CCAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Botstraper", "Botstraper\Botstraper.csproj", "{B32FA644-C719-458D-85B2-1B102D9100ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bootstrapper", "Botstraper\Bootstrapper.csproj", "{B32FA644-C719-458D-85B2-1B102D9100ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiWebApi", "MiWebApi\MiWebApi.csproj", "{085C59E7-FA0C-4F35-8640-D9008D44B23B}"
 	ProjectSection(ProjectDependencies) = postProject

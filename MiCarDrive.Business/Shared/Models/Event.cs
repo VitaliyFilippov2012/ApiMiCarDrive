@@ -16,7 +16,6 @@ namespace Shared.Models
         public decimal? UnitPrice { get; set; }
         public string Comment { get; set; }
         public long? Mileage { get; set; }
-        public Guid? PhotoArchiveId { get; set; }
         public string AddressStation { get; set; }
     }
 }
