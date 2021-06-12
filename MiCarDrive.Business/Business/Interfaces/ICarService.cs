@@ -11,7 +11,7 @@ namespace Business.Interfaces
         Task<Car> GetCarByIdAsync(Guid idCar);
         Task<Guid> CreateCarAsync(Car car, Guid userId);
         Task<bool> UpdateCarAsync(Car car);
-        Task<bool> ShareCarWithOtherUserAsync(Guid carId, string email, string uri);
+        Task<UserInfo> ShareCarWithOtherUserAsync(Guid carId, string email);
         Task<bool> AddShareCarAsync(string encryptString);
         Task<bool> DeleteShareCarAsync(Guid carId, Guid userId);
     }

@@ -67,11 +67,10 @@ namespace MiWebApi.Controllers
         [HttpPost]
         [AuthenticationFilter]
         [Route("car/shareCar/{carId}&{email}")]
-        public async Task<bool> ShareCar(Guid carId, string email)
+        public async Task<UserInfo> ShareCar(Guid carId, string email)
         {
-            if (!Validate()) return false;
-            var uri = Constants.URI_SERVER + "/fcm/addShareCar/";
-            return await _carsService.ShareCarWithOtherUserAsync(carId, email, uri);
+            if (!Validate()) return null;
+            return await _carsService.ShareCarWithOtherUserAsync(carId, email);
         }
 
         private bool Validate()

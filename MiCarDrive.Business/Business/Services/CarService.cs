@@ -7,6 +7,8 @@ using Business.Interfaces;
 using DBContext.Context;
 using DBContext.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.Filters;
+using Shared.Models;
 using Car = Shared.Models.Car;
 using Type = Shared.Models.Type;
 
@@ -31,7 +33,7 @@ namespace Business.Services
                         join car in Context.Cars on u.CarId equals car.CarId
                         let usersCar = Context.UsersCars.Include(x => x.UsersCarsRights).Include(x => x.UsersCarsRoles).Where(x => x.CarId == car.CarId).ToList()
                         let usersCarId = usersCar.Select(x => new { x.UserId, x.UserCarId }).ToList()
-                        let users = usersCar.Select(x => x.User.ToDto(usersCarId.First(uc => uc.UserId == x.UserId).UserCarId, x.UsersCarsRights.Select(r => r.RightId).ToList(), x.UsersCarsRoles.Select(r=>r.RoleId).ToList())).ToList()
+                        let users = usersCar.Select(x => x.User.ToDto(usersCarId.First(uc => uc.UserId == x.UserId).UserCarId, x.User.Authentication.Login, x.UsersCarsRights.Select(r => r.RightId).ToList(), x.UsersCarsRoles.Select(r=>r.RoleId).FirstOrDefault())).ToList()
                         select car.ToDto(users);
             return await query.ToListAsync();
         }
@@ -49,7 +51,15 @@ namespace Business.Services
                 {
                     var carToSave = car.ToEntity();
                     await Context.Cars.AddAsync(carToSave);
-                    await Context.UsersCars.AddAsync(new UsersCar() { UserId = userId, Car = carToSave });
+                    foreach (var userInfo in car.Users)
+                    {
+                        await Context.UsersCars.AddAsync(new UsersCar() { UserCarId = userInfo.UserCarId, UserId = userId, Car = carToSave });
+                        await Context.UsersCarsRoles.AddAsync(new UsersCarsRole(){RoleId = userInfo.RoleId, UserCarId = userInfo.UserCarId });
+                        foreach (var rightId in userInfo.RightIds)
+                        {
+                            await Context.UsersCarsRights.AddAsync(new UsersCarsRight(){RightId = rightId, UserCarId = userInfo.UserCarId });
+                        }
+                    }
                     await Context.SaveChangesAsync();
                     transaction.Commit();
                     return carToSave.CarId;
@@ -73,18 +83,52 @@ namespace Business.Services
             return true;
         }
 
-        public async Task<bool> ShareCarWithOtherUserAsync(Guid carId, string email, string uri)
+        public async Task<UserInfo> ShareCarWithOtherUserAsync(Guid carId, string email)
         {
             if (string.IsNullOrWhiteSpace(email))
-                return false;
+                return null;
             var userId = await _userService.GetUserIdByLoginAsync(email);
             if (userId == Guid.Empty)
-                return false;
-            var json = carId + userId.ToString();
-            var encryptJson = _cryptographyService.EncryptString(json);
-            var message = "Follow the link to add a common car\n Link: " + uri + encryptJson;
-            await _emailService.SendEmailMessageAsync(message, email);
-            return true;
+                return null;
+            var userFilter = new UserFilter()
+            {
+                UserId = userId
+            };
+            var user = (await _userService.GetUsersAsync(userFilter)).FirstOrDefault();
+            user = await AddShareCarAsync(user, carId);
+            //var message = "Go to the miCarDrive app, a new car was added\n";
+            //await _emailService.SendEmailMessageAsync(message, email);
+            return user;
+        }
+
+        private async Task<UserInfo> AddShareCarAsync(UserInfo user, Guid carId)
+        {
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    user.UserCarId = Guid.NewGuid();
+                    user.RoleId = new Guid("A61EF7D8-FE2A-4390-A453-6027CDC45A7E");
+                    user.RightIds = new Guid[] {new Guid("BC962584-7EB9-465E-8269-FAA28985B786")};
+                    var userCar = new UsersCar
+                    {
+                        UserCarId = user.UserCarId,
+                        UserId = user.UserId,
+                        CarId = carId
+                    };
+                    await Context.UsersCarsRoles.AddAsync(new UsersCarsRole() { RoleId = user.RoleId, UserCarId = userCar.UserCarId });
+                    await Context.UsersCarsRights.AddAsync(new UsersCarsRight() { RightId = user.RightIds.First(), UserCarId = userCar.UserCarId });
+                    await Context.UsersCars.AddAsync(userCar);
+                    await Context.SaveChangesAsync();
+                    transaction.Commit();
+                    return user;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return null;
+                }
+            }
         }
 
         public async Task<bool> AddShareCarAsync(string encryptString)

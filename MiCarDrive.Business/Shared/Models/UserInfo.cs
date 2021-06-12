@@ -24,6 +24,6 @@ namespace Shared.Models
         public string PhotoPath { get; set; }
 
         public IEnumerable<Guid> RightIds { get; set; }
-        public IEnumerable<Guid> RoleIds { get; set; }
+        public Guid RoleId { get; set; }
     }
 }

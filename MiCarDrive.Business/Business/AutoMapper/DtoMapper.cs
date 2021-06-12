@@ -68,12 +68,13 @@ namespace Business.AutoMapper
             return dto;
         }
 
-        public static UserInfo ToDto(this User user, Guid userCarId, IEnumerable<Guid> rightIds, IEnumerable<Guid> roleIds)
+        public static UserInfo ToDto(this User user, Guid userCarId, string email, IEnumerable<Guid> rightIds, Guid? roleId)
         {
             var dto = ToDto<User, UserInfo>(user);
             dto.UserCarId = userCarId;
             dto.RightIds = rightIds;
-            dto.RoleIds = roleIds;
+            dto.Email = email;
+            dto.RoleId = roleId.GetValueOrDefault();
             return dto;
         }
 
@@ -153,6 +154,7 @@ namespace Business.AutoMapper
         {
             var serviceDto = ToDto<CarEvent, EventService>(carEvent);
             var service = carEvent.CarServices.First();
+            serviceDto.RepeatInterval = service.RepeatInterval;
             serviceDto.ServiceId = service.ServiceId;
             serviceDto.ServiceTypeId = service.ServiceTypeId;
             serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();
@@ -162,6 +164,7 @@ namespace Business.AutoMapper
         public static EventService ToServiceDto(this CarEvent carEvent, CarService service)
         {
             var serviceDto = ToDto<CarEvent, EventService>(carEvent);
+            serviceDto.RepeatInterval = service.RepeatInterval;
             serviceDto.ServiceId = service.ServiceId;
             serviceDto.ServiceTypeId = service.ServiceTypeId;
             serviceDto.Details = service.Details?.ToDtoList() ?? new List<Detail>();

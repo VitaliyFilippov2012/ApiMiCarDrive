@@ -121,9 +121,21 @@ namespace Business.Services
 
         public async Task<bool> CreateCarEventAsync(Event carEvent)
         {
-            await Context.CarEvents.AddAsync(carEvent.ToEntity());
-            await Context.SaveChangesAsync();
-            return true;
+            using (var transaction = Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    await Context.CarEvents.AddAsync(carEvent.ToEntity());
+                    await Context.SaveChangesAsync();
+                    transaction.Commit();
+                    return true;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
         }
 
         public async Task<bool> UpdateCarFuelEventAsync(Refill refillEvent)

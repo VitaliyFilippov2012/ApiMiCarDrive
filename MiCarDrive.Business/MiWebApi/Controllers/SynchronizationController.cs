@@ -36,6 +36,7 @@ namespace MiWebApi.Controllers
             var userId = new Guid(userIdString);
             if (clientSynchronizationDataContract?.LastSyncDate == null)
                 return null;
+            PrepareDataForSynchronization(clientSynchronizationDataContract);
             await DeleteEntitiesFromServer(userId, clientSynchronizationDataContract.Delete);
             var finalDeleteAction = await GetDeleteActions(userId, clientSynchronizationDataContract);
 
@@ -48,6 +49,13 @@ namespace MiWebApi.Controllers
             var newLastDateSync = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             return new SynchronizationContract()
             { SynchronizationDataMembers = synchronizationDataMembers, LastSyncDate = newLastDateSync };
+        }
+
+        private void PrepareDataForSynchronization(SynchronizationClientDataContract clientSynchronizationDataContract)
+        {
+            clientSynchronizationDataContract.Delete ??= new List<SyncEntity>();
+            clientSynchronizationDataContract.Put ??= new List<SyncEntity>();
+            clientSynchronizationDataContract.Post ??= new List<SyncEntity>();
         }
 
         private static SynchronizationDataMember ToSynchronizationDataMember(SyncEntity x, ActionType actionType)
